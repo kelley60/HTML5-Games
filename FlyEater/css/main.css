@@ -1,0 +1,8 @@
+#reset{
+	position:absolute;
+	z-index:1;
+	width:150px;
+	height:300px;
+	left: 400px;
+	top: 600px;
+}

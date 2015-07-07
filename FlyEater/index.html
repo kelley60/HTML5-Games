@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title>FlyEater</title>
+		<link rel="stylesheet" href="css/main.css">
+		<script type="text/javascript" src="scripts/simpleGame.js"></script>
+		<script type="text/javascript" src="scripts/frogLib.js"></script>
+		<script type="text/javascript">
+			var scene;
+			var frog;
+			var flies;
+			var scoreBoard;
+			var hits;
+			var NUMFLIES = 3;
+			var MAXTIME = 20;
+			var timer;
+			var time;
+			
+			
+			function init(){
+				scoreBoard = document.getElementById("scoreBoard");
+				hits = 0;
+				timer = new Timer();
+				scene = new Scene();
+				scene.setBG("green");
+				frog = new Frog();
+				setupFlies();
+				scene.start();
+			}
+			
+			function update(){
+				scene.clear();
+				checkTime();
+				frog.checkKeys();
+				for (i = 0; i < NUMFLIES; i++){
+					flies[i].wriggle();
+					checkCollisions(i);
+					flies[i].update();
+				}
+				frog.update();
+			}
+	
+			function setupFlies(){
+				flies = new Array(NUMFLIES);
+				for (i = 0; i < NUMFLIES; i++){
+					flies[i] = new Fly();
+				}
+			}
+	
+			function checkCollisions(flyNum){
+				if (frog.collidesWith(flies[flyNum])){
+					flies[flyNum].reset();
+					hits += 1;
+					updateScore();
+				}
+			}
+			
+			function updateScore(){
+				scoreBoard.innerHTML = "Hits: " + hits + ". Time: " + time;
+			}
+			
+			function checkTime(){
+				time = timer.getElapsedTime();
+				if (time > MAXTIME){
+					scene.stop();
+				}
+				updateScore();
+			}
+			
+			function restart(){
+				document.location.href = "";
+			}
+			
+		</script>
+	</head>
+	<body onload="init()">
+		<div id = "scoreBoard">Hits: 0</div>
+		<div id = "reset">
+			<button type = "button"
+				onclick = "restart()">
+				Play again
+			</button>
+		</div>		
+	</body>
+</html>

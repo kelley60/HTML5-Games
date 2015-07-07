@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title>Collision</title>
+		<script type="text/javascript" src="scripts/simpleGame.js"></script>
+		<script type="text/javascript">
+			var game;
+			var box;
+			var critter;
+			var output;
+			
+			function init(){
+				game = new Scene();
+				game.hideCursor();
+				box = new Sprite(game, "images/box.jpg",50,50);
+				critter = new Sprite(game, "images/critter.jpg",50,50);
+				output = document.getElementById("output");
+				
+				box.setPosition(200, 150);
+				box.setSpeed(0);
+				
+				critter.setPosition(100,100);
+				critter.setSpeed(0);
+				
+				critter.followMouse = function(){
+					this.setX(document.mouseX);
+					this.setY(document.mouseY);
+				}
+				
+				game.start();
+			}
+			
+			function update(){
+				game.clear();	
+				critter.followMouse();
+				checkDistance();
+				box.update();
+				critter.update();
+				
+			}
+			
+			
+			function checkDistance(){
+				dist = box.distanceTo(critter);
+				if (dist < 50){
+					output.innerHTML = "Collision: " + dist;
+				}
+				else{
+					output.innerHTML = "No Collision: " + dist;
+				}
+			}
+		
+		</script>
+	</head>
+	<body onload="init()">
+		<div id = "output">empty</div>
+	</body>
+</html>
